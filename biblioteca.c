@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#define CLIENTES_FILE "clientes.bin"
+#define TRANSACOES_FILE "transacoes.bin"
+#define EXTRATO_FILE "extrato.txt"
+
 static Cliente clientes[MAX_CLIENTES];
 static int numClientes = 0;
 static Transacao transacoes[MAX_TRANSACOES];
@@ -94,7 +98,7 @@ void depositar(const char *cpf, float valor) {
 void extrato(const char *cpf, const char *senha) {
     Cliente *cliente = buscarClientePorCPF(cpf);
     if (cliente && strcmp(cliente->senha, senha) == 0) {
-        FILE *file = fopen("extrato.txt", "w");
+        FILE *file = fopen(EXTRATO_FILE, "w");
         for (int i = 0; i < numTransacoes; i++) {
             if (strcmp(transacoes[i].cpf, cpf) == 0) {
                 fprintf(file, "Tipo: %s, Valor: %.2f\n",
@@ -109,7 +113,7 @@ void extrato(const char *cpf, const char *senha) {
 }
 
 void transferir(char cpf[], char senha[], char cpfDestino[], float valor) {
-    Cliente *clienteOrigem = buscarClientePorCPF(cpfOrigem);
+    Cliente *clienteOrigem = buscarClientePorCPF(cpf);
     Cliente *clienteDestino = buscarClientePorCPF(cpfDestino);
 
     if (clienteOrigem && clienteDestino && strcmp(clienteOrigem->senha, senha) == 0) {
@@ -122,7 +126,7 @@ void transferir(char cpf[], char senha[], char cpfDestino[], float valor) {
 
             // Registrar transação de débito
             Transacao tOrigem;
-            strcpy(tOrigem.cpf, cpfOrigem);
+            strcpy(tOrigem.cpf, cpf);
             tOrigem.tipo = DEBITO;
             tOrigem.valor = debito;
             registrarTransacao(tOrigem);
@@ -151,7 +155,7 @@ void registrarTransacao(Transacao t) {
 }
 
 void salvarClientesArquivo() {
-    FILE *file = fopen("clientes.bin", "wb");
+    FILE *file = fopen(CLIENTES_FILE, "wb");
     if (file) {
         fwrite(&numClientes, sizeof(int), 1, file);
         fwrite(clientes, sizeof(Cliente), numClientes, file);
@@ -162,7 +166,7 @@ void salvarClientesArquivo() {
 }
 
 void carregarClientesArquivo() {
-    FILE *file = fopen("clientes.bin", "rb");
+    FILE *file = fopen(CLIENTES_FILE, "rb");
     if (file) {
         fread(&numClientes, sizeof(int), 1, file);
         fread(clientes, sizeof(Cliente), numClientes, file);
@@ -173,7 +177,7 @@ void carregarClientesArquivo() {
 }
 
 void salvarTransacoesArquivo() {
-    FILE *file = fopen("transacoes.bin", "wb");
+    FILE *file = fopen(TRANSACOES_FILE, "wb");
     if (file) {
         fwrite(&numTransacoes, sizeof(int), 1, file);
         fwrite(transacoes, sizeof(Transacao), numTransacoes, file);
@@ -184,7 +188,7 @@ void salvarTransacoesArquivo() {
 }
 
 void carregarTransacoesArquivo() {
-    FILE *file = fopen("transacoes.bin", "rb");
+    FILE *file = fopen(TRANSACOES_FILE, "rb");
     if (file) {
         fread(&numTransacoes, sizeof(int), 1, file);
         fread(transacoes, sizeof(Transacao), numTransacoes, file);
