@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include "biblioteca.h"
 
-// Feito por:
- //Matheus Ferreira de Freitas - 24.123.080-4
- // Rafael Russo Mingroni - 24.123.054-9
+// Autores do programa:
+// Matheus Ferreira de Freitas - 24.123.080-4
+// Rafael Russo Mingroni - 24.123.054-9
 
+// Função que exibe o menu de opções para o usuário.
 void menu() {
     printf("====================================\n");
     printf("Banco QuemPoupaTem\n");
@@ -23,21 +24,25 @@ void menu() {
 }
 
 int main() {
+    // Declaração de variáveis utilizadas para armazenar dados temporários e a opção do menu escolhida pelo usuário.
     int opcao;
     char cpf[MAX_CPF_SIZE];
     char senha[MAX_SENHA_SIZE];
     float valor;
     Cliente c;
 
+    // Carrega informações de clientes e transações dos respectivos arquivos ao iniciar o programa.
     carregarClientesArquivo();
     carregarTransacoesArquivo();
 
+    // Loop infinito para o programa continuar em execução até que o usuário opte por sair.
     while (1) {
-        menu();
+        menu();  // Exibe o menu de opções.
         scanf("%d", &opcao);
 
+        // Estrutura de seleção para tratar a opção escolhida pelo usuário.
         switch (opcao) {
-            case 1:
+            case 1:  // Opção para adicionar um novo cliente.
                 printf("Nome: ");
                 scanf("%s", c.nome);
                 printf("CPF: ");
@@ -51,17 +56,17 @@ int main() {
                 adicionarCliente(c);
                 break;
 
-            case 2:
+            case 2:  // Opção para remover um cliente existente.
                 printf("CPF do cliente a ser removido: ");
                 scanf("%s", cpf);
                 removerCliente(cpf);
                 break;
 
-            case 3:
+            case 3:  // Opção para listar todos os clientes.
                 listarClientes();
                 break;
 
-            case 4:
+            case 4:  // Opção para realizar um débito em uma conta.
                 printf("CPF: ");
                 scanf("%s", cpf);
                 printf("Senha: ");
@@ -71,7 +76,7 @@ int main() {
                 debitar(cpf, senha, valor);
                 break;
 
-            case 5:
+            case 5:  // Opção para realizar um depósito em uma conta.
                 printf("CPF: ");
                 scanf("%s", cpf);
                 printf("Valor: ");
@@ -79,7 +84,7 @@ int main() {
                 depositar(cpf, valor);
                 break;
 
-            case 6:
+            case 6:  // Opção para exibir o extrato de uma conta.
                 printf("CPF: ");
                 scanf("%s", cpf);
                 printf("Senha: ");
@@ -87,7 +92,7 @@ int main() {
                 extrato(cpf, senha);
                 break;
 
-            case 7:
+            case 7:  // Opção para realizar uma transferência entre contas.
                 char cpfDestino[MAX_CPF_SIZE];
                 printf("CPF (Origem): ");
                 scanf("%s", cpf);
@@ -100,16 +105,16 @@ int main() {
                 transferir(cpf, senha, cpfDestino, valor);
                 break;
 
-            case 0:
-                salvarClientesArquivo();
-                salvarTransacoesArquivo();
-                exit(0);
+            case 0:  // Opção para sair do programa.
+                salvarClientesArquivo();         // Salva as informações de clientes no arquivo antes de sair.
+                salvarTransacoesArquivo();       // Salva as informações de transações no arquivo antes de sair.
+                exit(0);                         // Termina a execução do programa.
                 break;
 
-            default:
+            default:  // Caso o usuário insira uma opção que não esteja listada no menu.
                 printf("Opção inválida. Tente novamente.\n");
         }
     }
 
-    return 0;
+    return 0;  // Retorna 0 ao finalizar a execução do programa (embora, devido ao loop, este ponto não seja alcançado).
 }
