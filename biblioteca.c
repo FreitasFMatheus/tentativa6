@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 
+//"olá Leo, tudo bem contigo não coloquei nome de filme nesse projeto igual no semestre passado, mas ainda assim espero que tenha ficado menos cansativo de ler durante a correção"
+
 // Definindo constantes para os nomes dos arquivos
 #define CLIENTES_FILE "clientes.bin"
 #define TRANSACOES_FILE "transacoes.bin"
