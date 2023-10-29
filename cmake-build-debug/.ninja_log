@@ -1,0 +1,7 @@
+# ninja log v5
+1	182	7172751659865829	CMakeFiles/Projeto1.dir/main.c.obj	5f57ea903a974987
+19	184	7172751659925810	CMakeFiles/Projeto1.dir/biblioteca.c.obj	f1be932010b949bc
+184	375	7172751661784793	Projeto1.exe	124224177c82c5a7
+28	247	7202071714475306	CMakeFiles/Projeto1.dir/biblioteca.c.obj	707421d71c30835
+1	248	7202071714465309	CMakeFiles/Projeto1.dir/main.c.obj	abf3766d6f5b336
+248	497	7202071717022558	Projeto1.exe	124224177c82c5a7
