@@ -24,8 +24,8 @@ void menu() {
 
 int main() {
     int opcao;
-    char cpf[MAX_CPF];
-    char senha[MAX_SENHA];
+    char cpf[MAX_CPF_SIZE];
+    char senha[MAX_SENHA_SIZE];
     float valor;
     Cliente c;
 
@@ -88,7 +88,7 @@ int main() {
                 break;
 
             case 7:
-                char cpfDestino[MAX_CPF];
+                char cpfDestino[MAX_CPF_SIZE];
                 printf("CPF (Origem): ");
                 scanf("%s", cpf);
                 printf("Senha (Origem): ");
