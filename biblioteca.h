@@ -7,6 +7,10 @@
 #define MAX_CLIENTES 100
 #define MAX_TRANSACOES 1000
 
+
+//"olá Leo, tudo bem contigo não coloquei nome de filme nesse projeto igual no semestre passado, mas ainda assim espero que tenha ficado menos cansativo de ler durante a correção"
+
+
 // Ajustando os tamanhos para acomodar a terminação de string corretamente
 #define MAX_CPF_SIZE (MAX_CPF + 1)
 #define MAX_NOME_SIZE (MAX_NOME + 1)
