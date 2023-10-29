@@ -7,15 +7,20 @@
 #define MAX_CLIENTES 100
 #define MAX_TRANSACOES 1000
 
+// Ajustando os tamanhos para acomodar a terminação de string corretamente
+#define MAX_CPF_SIZE (MAX_CPF + 1)
+#define MAX_NOME_SIZE (MAX_NOME + 1)
+#define MAX_SENHA_SIZE (MAX_SENHA + 1)
+
 typedef enum {
     COMUM,
     PLUS
 } TipoConta;
 
 typedef struct {
-    char nome[MAX_NOME];
-    char cpf[MAX_CPF];
-    char senha[MAX_SENHA];
+    char nome[MAX_NOME_SIZE];
+    char cpf[MAX_CPF_SIZE];
+    char senha[MAX_SENHA_SIZE];
     TipoConta tipo;
     float saldo;
 } Cliente;
@@ -26,7 +31,7 @@ typedef enum {
 } TipoTransacao;
 
 typedef struct {
-    char cpf[MAX_CPF];
+    char cpf[MAX_CPF_SIZE];
     TipoTransacao tipo;
     float valor;
 } Transacao;
