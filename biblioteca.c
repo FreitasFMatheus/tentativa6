@@ -1,19 +1,23 @@
 //
 // Created by Matheus Freitas on 24/09/2023.
 //
+
 #include "biblioteca.h"
 #include <stdio.h>
 #include <string.h>
 
+// Definindo constantes para os nomes dos arquivos
 #define CLIENTES_FILE "clientes.bin"
 #define TRANSACOES_FILE "transacoes.bin"
 #define EXTRATO_FILE "extrato.txt"
 
+// Arrays estáticos para armazenar clientes e transações
 static Cliente clientes[MAX_CLIENTES];
-static int numClientes = 0;
+static int numClientes = 0;  // Contador de clientes
 static Transacao transacoes[MAX_TRANSACOES];
-static int numTransacoes = 0;
+static int numTransacoes = 0;  // Contador de transações
 
+// Função para adicionar um cliente à lista de clientes
 void adicionarCliente(Cliente c) {
     if (numClientes < MAX_CLIENTES) {
         clientes[numClientes] = c;
@@ -23,15 +27,17 @@ void adicionarCliente(Cliente c) {
     }
 }
 
+// Busca um cliente pelo CPF e retorna um ponteiro para o mesmo
 Cliente *buscarClientePorCPF(const char *cpf) {
     for (int i = 0; i < numClientes; i++) {
         if (strcmp(clientes[i].cpf, cpf) == 0) {
             return &clientes[i];
         }
     }
-    return NULL;
+    return NULL;  // Retorna NULL se não encontrar o cliente
 }
 
+// Remove um cliente pelo CPF
 void removerCliente(const char *cpf) {
     int index = -1;
     for (int i = 0; i < numClientes; i++) {
@@ -51,6 +57,7 @@ void removerCliente(const char *cpf) {
     }
 }
 
+// Função que lista todos os clientes registrados
 void listarClientes() {
     for (int i = 0; i < numClientes; i++) {
         printf("Nome: %s, CPF: %s, Tipo de Conta: %s, Saldo: %.2f\n",
@@ -61,6 +68,7 @@ void listarClientes() {
     }
 }
 
+// Função para debitar um valor da conta de um cliente
 void debitar(const char *cpf, const char *senha, float valor) {
     Cliente *cliente = buscarClientePorCPF(cpf);
     if (cliente && strcmp(cliente->senha, senha) == 0) {
@@ -79,6 +87,7 @@ void debitar(const char *cpf, const char *senha, float valor) {
     }
 }
 
+// Função para depositar um valor na conta de um cliente
 void depositar(const char *cpf, float valor) {
     Cliente *cliente = buscarClientePorCPF(cpf);
     if (cliente) {
@@ -95,6 +104,7 @@ void depositar(const char *cpf, float valor) {
     }
 }
 
+// Função para gerar o extrato das transações de um cliente
 void extrato(const char *cpf, const char *senha) {
     Cliente *cliente = buscarClientePorCPF(cpf);
     if (cliente && strcmp(cliente->senha, senha) == 0) {
@@ -112,6 +122,7 @@ void extrato(const char *cpf, const char *senha) {
     }
 }
 
+// Função para transferir dinheiro entre dois clientes
 void transferir(char cpf[], char senha[], char cpfDestino[], float valor) {
     Cliente *clienteOrigem = buscarClientePorCPF(cpf);
     Cliente *clienteDestino = buscarClientePorCPF(cpfDestino);
@@ -145,55 +156,74 @@ void transferir(char cpf[], char senha[], char cpfDestino[], float valor) {
     }
 }
 
+// Função para registrar uma nova transação, seja de débito ou depósito.
 void registrarTransacao(Transacao t) {
+    // Verifica se o limite de transações foi atingido
     if (numTransacoes < MAX_TRANSACOES) {
+        // Adiciona a transação ao array de transações
         transacoes[numTransacoes] = t;
         numTransacoes++;
     } else {
+        // Exibe uma mensagem de erro se o limite de transações for atingido
         printf("Limite de transações atingido.\n");
     }
 }
 
+// Função para salvar os clientes em um arquivo binário
 void salvarClientesArquivo() {
+    // Abre o arquivo para gravação em modo binário
     FILE *file = fopen(CLIENTES_FILE, "wb");
     if (file) {
+        // Escreve a quantidade de clientes e depois os dados dos clientes
         fwrite(&numClientes, sizeof(int), 1, file);
         fwrite(clientes, sizeof(Cliente), numClientes, file);
         fclose(file);
     } else {
+        // Exibe uma mensagem de erro se não for possível abrir o arquivo
         printf("Erro ao salvar clientes no arquivo.\n");
     }
 }
 
+// Função para carregar os clientes de um arquivo binário
 void carregarClientesArquivo() {
     FILE *file = fopen(CLIENTES_FILE, "rb");
     if (file) {
+        // Lê a quantidade de clientes e depois os dados dos clientes
         fread(&numClientes, sizeof(int), 1, file);
         fread(clientes, sizeof(Cliente), numClientes, file);
         fclose(file);
     } else {
+        // Exibe uma mensagem de erro se não for possível abrir o arquivo
         printf("Erro ao carregar clientes do arquivo.\n");
     }
 }
 
+// Função para salvar as transações em um arquivo binário
 void salvarTransacoesArquivo() {
+    // Abre o arquivo para gravação em modo binário
     FILE *file = fopen(TRANSACOES_FILE, "wb");
     if (file) {
+        // Escreve a quantidade de transações e depois os dados das transações
         fwrite(&numTransacoes, sizeof(int), 1, file);
         fwrite(transacoes, sizeof(Transacao), numTransacoes, file);
         fclose(file);
     } else {
+        // Exibe uma mensagem de erro se não for possível abrir o arquivo
         printf("Erro ao salvar transações no arquivo.\n");
     }
 }
 
+// Função para carregar as transações de um arquivo binário
 void carregarTransacoesArquivo() {
     FILE *file = fopen(TRANSACOES_FILE, "rb");
     if (file) {
+        // Lê a quantidade de transações e depois os dados das transações
         fread(&numTransacoes, sizeof(int), 1, file);
         fread(transacoes, sizeof(Transacao), numTransacoes, file);
         fclose(file);
     } else {
+        // Exibe uma mensagem de erro se não for possível abrir o arquivo
+        // Tive alguns problemas fazendo essa parte, a leitura estava dando errado
         printf("Erro ao carregar transações do arquivo.\n");
     }
 }
