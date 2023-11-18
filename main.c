@@ -24,25 +24,27 @@ void menu() {
 }
 
 int main() {
-    // Declaração de variáveis utilizadas para armazenar dados temporários e a opção do menu escolhida pelo usuário.
     int opcao;
     char cpf[MAX_CPF_SIZE];
     char senha[MAX_SENHA_SIZE];
     float valor;
     Cliente c;
 
-    // Carrega informações de clientes e transações dos respectivos arquivos ao iniciar o programa.
-    carregarClientesArquivo();
-    carregarTransacoesArquivo();
+    // Cria a estrutura BancoDados
+    BancoDados bancoDados;
+    bancoDados.numClientes = 0;
+    bancoDados.numTransacoes = 0;
 
-    // Loop infinito para o programa continuar em execução até que o usuário opte por sair.
+    // Carrega informações de clientes e transações dos respectivos arquivos ao iniciar o programa.
+    carregarClientesArquivo(&bancoDados);
+    carregarTransacoesArquivo(&bancoDados);
+
     while (1) {
         menu();  // Exibe o menu de opções.
         scanf("%d", &opcao);
 
-        // Estrutura de seleção para tratar a opção escolhida pelo usuário.
         switch (opcao) {
-            case 1:  // Opção para adicionar um novo cliente.
+            case 1:
                 printf("Nome: ");
                 scanf("%s", c.nome);
                 printf("CPF: ");
@@ -53,46 +55,46 @@ int main() {
                 scanf("%d", (int*)&c.tipo);
                 printf("Valor inicial: ");
                 scanf("%f", &c.saldo);
-                adicionarCliente(c);
+                adicionarCliente(&bancoDados, c);
                 break;
 
-            case 2:  // Opção para remover um cliente existente.
+            case 2:
                 printf("CPF do cliente a ser removido: ");
                 scanf("%s", cpf);
-                removerCliente(cpf);
+                removerCliente(&bancoDados, cpf);
                 break;
 
-            case 3:  // Opção para listar todos os clientes.
-                listarClientes();
+            case 3:
+                listarClientes(&bancoDados);
                 break;
 
-            case 4:  // Opção para realizar um débito em uma conta.
+            case 4:
                 printf("CPF: ");
                 scanf("%s", cpf);
                 printf("Senha: ");
                 scanf("%s", senha);
                 printf("Valor: ");
                 scanf("%f", &valor);
-                debitar(cpf, senha, valor);
+                debitar(&bancoDados, cpf, senha, valor);
                 break;
 
-            case 5:  // Opção para realizar um depósito em uma conta.
+            case 5:
                 printf("CPF: ");
                 scanf("%s", cpf);
                 printf("Valor: ");
                 scanf("%f", &valor);
-                depositar(cpf, valor);
+                depositar(&bancoDados, cpf, valor);
                 break;
 
-            case 6:  // Opção para exibir o extrato de uma conta.
+            case 6:
                 printf("CPF: ");
                 scanf("%s", cpf);
                 printf("Senha: ");
                 scanf("%s", senha);
-                extrato(cpf, senha);
+                extrato(&bancoDados, cpf, senha);
                 break;
 
-            case 7:  // Opção para realizar uma transferência entre contas.
+            case 7:
                 char cpfDestino[MAX_CPF_SIZE];
                 printf("CPF (Origem): ");
                 scanf("%s", cpf);
@@ -102,19 +104,19 @@ int main() {
                 scanf("%s", cpfDestino);
                 printf("Valor: ");
                 scanf("%f", &valor);
-                transferir(cpf, senha, cpfDestino, valor);
+                transferir(&bancoDados, cpf, senha, cpfDestino, valor);
                 break;
 
-            case 0:  // Opção para sair do programa.
-                salvarClientesArquivo();         // Salva as informações de clientes no arquivo antes de sair.
-                salvarTransacoesArquivo();       // Salva as informações de transações no arquivo antes de sair.
-                exit(0);                         // Termina a execução do programa.
+            case 0:
+                salvarClientesArquivo(&bancoDados);
+                salvarTransacoesArquivo(&bancoDados);
+                exit(0);
                 break;
 
-            default:  // Caso o usuário insira uma opção que não esteja listada no menu.
+            default:
                 printf("Opção inválida. Tente novamente.\n");
         }
     }
 
-    return 0;  // Retorna 0 ao finalizar a execução do programa (embora, devido ao loop, este ponto não seja alcançado).
+    return 0;
 }
